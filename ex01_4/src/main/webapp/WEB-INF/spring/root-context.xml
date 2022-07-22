@@ -2,11 +2,48 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
+	<!-- [HikariCP] ConnectionPoor -->
+	<!-- [HikariConfig] 객체 hikariconfig 빈 등록 -->
+	<!-- Bean id = 사용하는 변수명 -->
+	<bean id="hikariconfig" class="com.zaxxer.hikari.HikariConfig">
+		<!-- ds객체에 주입 하기 위해 setter()를 통한 주입 - HikariDataSource의 필드 초기화 -->
+
+		<!-- log4jdbc를 사용하기 위해 주석처리 -->
+		<!-- <property name="driverClassName" value="oracle.jdbc.OracleDriver" 
+			/> <property name="jdbcUrl" value="jdbc:oracle:thin:@3.36.138.247:1522:xe" 
+			/> -->
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@3.36.138.247:1522:xe" />
+		<property name="username" value="huny22" />
+		<property name="password" value="huny22" />
+	</bean>
+
+	<!-- [HikariDataSource] 객체 dataSource 빈 등록 / DataSource역할 -->
+	<!-- Bean id = 사용하는 변수명 -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+		<!-- dataSource객체에 hikariconfig객체 의존성 주입 -생성자를 통한 의존성 주입 -->
+		<constructor-arg ref="hikariconfig" />
+	</bean>
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<mybatis-spring:scan
+		base-package="org.zerock.mapper" />
+
 	<context:component-scan
 		base-package="org.zerock.sample" />
+
+
 </beans>

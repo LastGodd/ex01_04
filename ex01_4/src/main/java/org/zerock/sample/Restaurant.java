@@ -10,6 +10,6 @@ import lombok.Data;
 public class Restaurant {
 	
 	@Autowired
-	private Restaurant restaurant;
+	private Chef chef;
 	
 }
