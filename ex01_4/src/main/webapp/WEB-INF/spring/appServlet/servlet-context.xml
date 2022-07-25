@@ -39,9 +39,9 @@
 		<beans:property name="maxUploadSizePerFile"
 			value="2097152" />
 
-		<!-- 경로 -->
+		<!-- 경로 window와 mac은 경로가 다르기 때문에 구동시키기 전, 경로 확인-->
 		<beans:property name="uploadTempDir"
-			value="file:/Users/huny22/upload" />
+			value="file:\C:\upload\tmp" />
 
 		<!-- 메모리 상에서 유지하는 최대의 크기 -->
 		<beans:property name="maxInMemorySize" value="10485756" />
